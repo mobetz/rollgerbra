@@ -40,7 +40,7 @@ DiceExpression.prototype[Symbol.iterator] = function ()
         next: function () {
             return {
                 value: self.rolled_values[i++],
-                done: i < self.rolled_values.length
+                done: i > self.rolled_values.length
             };
         }
     };

@@ -66,6 +66,5 @@ module.exports = parse;
 
 if ( require.main == module ) {
     var result =  parse(process.argv[2]);
-    
     console.log( "Rolling " + process.argv[2] + ": " + result.calculation);
 }
