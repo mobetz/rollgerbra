@@ -45,11 +45,11 @@ function parse(expression) {
         else {
             var next_op = operators[next_char];
             if ( next_op ) {
-                num_queue.push(0); //if we've encountered an operator, next numbers are new numbers
-                while ( op_queue.length > 0 && next_op.priority <= op_queue[op_queue.length] ) {
+                while ( op_queue.length > 0 && next_op.priority <= op_queue[op_queue.length-1].priority ) {
                     do_next_operation(num_queue, op_queue, output);
                 }//while there are higher priority ops already on the stack
                 op_queue.push(next_op);
+                num_queue.push(0); //if we've encountered an operator, next numbers are new numbers
             }//if there is an op for this character
         }//if the character is not a number
     }//for each character
@@ -66,5 +66,6 @@ module.exports = parse;
 
 if ( require.main == module ) {
     var result =  parse(process.argv[2]);
-    console.log( "Rolling " + process.argv[2] + ": " + result.calculation);
+    var diestring = result.dice.reduce((str, de) => str + [...de].join(', '), '');
+    console.log( "Rolling " + process.argv[2] + ": [" + diestring + "] = " + result.calculation);
 }
