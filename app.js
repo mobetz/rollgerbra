@@ -66,6 +66,6 @@ module.exports = parse;
 
 if ( require.main == module ) {
     var result =  parse(process.argv[2]);
-    var diestring = result.dice.reduce((str, de) => str + [...de].join(', '), '');
-    console.log( "Rolling " + process.argv[2] + ": [" + diestring + "] = " + result.calculation);
+    var diestring = result.dice.reduce((str, de) => str + " " + de.toString() + ": [" + [...de].join(', ') + "]", '');
+    console.log( "Rolling " + process.argv[2] + ": {" + diestring + "} = " + result.calculation);
 }

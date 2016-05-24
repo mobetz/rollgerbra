@@ -3,6 +3,7 @@ var DieValue = require.main.require("./src/DieValue.js");
 function DiceExpression (quantity, sides) {
     this.sides = sides;
     this.rolled_values = roll(quantity, sides);
+    this.dice_string = quantity + "d" + sides;
     this.hit_on = -1;
     this.miss_on = -1;
 }
@@ -62,6 +63,8 @@ DiceExpression.prototype.valueOf = function () {
 };
 
 
-
+DiceExpression.prototype.toString = function() {
+  return this.dice_string;
+};
 
 module.exports = DiceExpression;
