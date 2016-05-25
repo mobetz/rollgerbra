@@ -1,4 +1,4 @@
-var DieValue = require.main.require("./src/DieValue.js");
+var DieValue = require("./DieValue.js");
 
 function DiceExpression (quantity, sides) {
     this.sides = sides;
@@ -33,6 +33,11 @@ DiceExpression.prototype.explode = function (over) {
     return this;
 };
 
+DiceExpression.prototype.best = function (count) {
+    var excluded_dice = this.rolled_values.slice().sort((a,b) => b-a).slice(count);
+    excluded_dice.forEach((d) => d.valid = false);
+    return this;
+};
 
 /* --- JAVASCRIPT INTERFACES --- */
 DiceExpression.prototype[Symbol.iterator] = function ()
