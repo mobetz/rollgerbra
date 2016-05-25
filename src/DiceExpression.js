@@ -39,6 +39,12 @@ DiceExpression.prototype.best = function (count) {
     return this;
 };
 
+DiceExpression.prototype.worst = function (count) {
+    var excluded_dice = this.rolled_values.slice().sort((a,b) => (b.valid) ? a-b : Number.MIN_SAFE_INTEGER).slice(count);
+    excluded_dice.forEach((d) => d.valid = false);
+    return this;
+};
+
 /* --- JAVASCRIPT INTERFACES --- */
 DiceExpression.prototype[Symbol.iterator] = function ()
 {
