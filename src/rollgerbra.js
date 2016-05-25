@@ -58,7 +58,7 @@ function parse(expression) {
         do_next_operation(num_queue, op_queue, output);
     }
 
-    output.calculation = num_queue.pop();
+    output.calculation = Number(num_queue.pop());
     return output;
 }//parse
 
@@ -73,9 +73,12 @@ function render_die_value(die_value) {
 }
 
 if ( require.main == module ) {
-    var result =  parse(process.argv[2]);
-    var diestring = result.dice.reduce((str, de) =>
+    if ( !process.argv[2]) {
+        throw `Usage: rollgerbra [expression]`;
+    }
+    var roll =  parse(process.argv[2]);
+    var diestring = roll.dice.reduce((str, de) =>
         str + " " + de.toString() + ": [" + [...de].map(render_die_value).join(', ') + "]",
     '');
-    console.log( "Rolling " + process.argv[2] + ": {" + diestring + "} = " + result.calculation);
+    console.log( "Rolling " + process.argv[2] + ": {" + diestring + "} = " + roll.calculation);
 }
