@@ -34,13 +34,13 @@ DiceExpression.prototype.explode = function (over) {
 };
 
 DiceExpression.prototype.best = function (count) {
-    var excluded_dice = this.rolled_values.slice().sort((a,b) => b-a).slice(count);
+    var excluded_dice = this.rolled_values.filter((v)=>v.valid).sort((a,b) => b-a).slice(count);
     excluded_dice.forEach((d) => d.valid = false);
     return this;
 };
 
 DiceExpression.prototype.worst = function (count) {
-    var excluded_dice = this.rolled_values.slice().sort((a,b) => (b.valid) ? a-b : Number.MIN_SAFE_INTEGER).slice(count);
+    var excluded_dice = this.rolled_values.filter((v)=>v.valid).sort((a,b) =>  a-b).slice(count);
     excluded_dice.forEach((d) => d.valid = false);
     return this;
 };
