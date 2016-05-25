@@ -5,14 +5,14 @@ var DieValue = require("./src/DieValue.js");
 var dicepriority = 3;
 
 var operators = {
-    '*': { priority: 2, func: function(x,y) { return x*y; } },
-    '+': { priority: 1, func: function(x,y) { return x+y; } },
-    '-': { priority: 1, func: function(x,y) { return x-y; } },
-    'd': { priority: dicepriority, func: function(x,y) { return new DiceExpression(x,y); }},
-    'b': { priority: dicepriority, func: function(x,y) { return x.best(y); } },
-    'w': { priority: dicepriority, func: function(x,y) { return x.worst(y); } },
-    '!': { priority: dicepriority, func: function(x,y) { return x.explode(y); } },
-    'h': { priority: dicepriority, func: function(x,y) { x.hit_on = y; return x; } },
+    '*': { priority: 2, func: (x,y) => x*y },
+    '+': { priority: 1, func: (x,y) => x+y },
+    '-': { priority: 1, func: (x,y) => x-y },
+    'd': { priority: dicepriority, func: (x,y) => new DiceExpression(x,y) },
+    'b': { priority: dicepriority, func: (x,y) => x.best(y) },
+    'w': { priority: dicepriority, func: (x,y) => x.worst(y) },
+    '!': { priority: dicepriority, func: (x,y) => x.explode(y) },
+    'h': { priority: dicepriority, func: (x,y) => { x.hit_on = y; return x; } },
     //miss
     //over
     //under
