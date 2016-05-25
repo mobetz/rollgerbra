@@ -67,9 +67,9 @@ module.exports = parse;
 
 /*--- CLI Functions ---*/
 function render_die_value(die_value) {
-    var valid_char = (die_value.valid) ? '' : '~';
-    var bonus_char = (die_value.bonus) ? '+' : '';
-    return bonus_char + valid_char + die_value.raw_value + valid_char;
+    var valid_char = (die_value.valid) ? '' : '~~';
+    var bonus_char = (die_value.bonus) ? '*' : '';
+    return bonus_char + valid_char + die_value.raw_value + valid_char + bonus_char;
 }
 
 if ( require.main == module ) {
