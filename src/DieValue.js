@@ -3,6 +3,7 @@
 function DieValue (sides) {
     this.raw_value = Math.floor(Math.random() * sides) + 1;
     this.valid = true;
+    this.bonus = false;
 }
 
 DieValue.prototype.valueOf = function () {

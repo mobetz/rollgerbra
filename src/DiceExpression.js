@@ -17,17 +17,19 @@ function roll(quantity, sides) {
     return rolls;
 }
 
-function count_successes(over) {
-    return this.rolled_values.reduce(function (running_total, next_roll) {
-        return running_total + ( next_roll >= over );
+function count_successes(dice, target) {
+    return dice.reduce(function (running_total, next_roll) {
+        return running_total + ( next_roll >= target );
     }, 0);
 }
 
 
 /* --- PUBLIC METHODS --- */
 DiceExpression.prototype.explode = function (over) {
-    var exploding_count = count_successes(over);
-    this.rolled_values.concat(roll(exploding_count, sides));
+    var exploding_count = count_successes(this.rolled_values, over);
+    var extra_rolls = roll(exploding_count, this.sides);
+    extra_rolls.map((r) => { r.bonus = true; return r;});
+    this.rolled_values = this.rolled_values.concat(extra_rolls);
     return this;
 };
 
@@ -52,7 +54,7 @@ DiceExpression.prototype.entries = DiceExpression.prototype[Symbol.iterator];
 DiceExpression.prototype.valueOf = function () {
     var total = 0;
     if ( this.hit_on > 0 ) {
-        total = count_successes(this.hit_on);
+        total = count_successes(this.rolled_values, this.hit_on);
     }
     else {
         total = this.rolled_values.reduce(function (running_total, next_roll) {
