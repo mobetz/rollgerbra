@@ -39,7 +39,7 @@ function parse(expression) {
 
     for( var i = 0; i < expression.length; i++ ) {
         var next_char = expression[i];
-        if ( !isNaN(next_char) ) {
+        if ( !isNaN(next_char) && !/\s/.test(next_char)) {
             num_queue.push( num_queue.pop() * 10 + Number(next_char) );
         }
         else {
