@@ -27,9 +27,14 @@ function count_successes(dice, target) {
 /* --- PUBLIC METHODS --- */
 DiceExpression.prototype.explode = function (over) {
     var exploding_count = count_successes(this.rolled_values, over);
-    var extra_rolls = roll(exploding_count, this.sides);
-    extra_rolls.map((r) => { r.bonus = true; return r;});
-    this.rolled_values = this.rolled_values.concat(extra_rolls);
+    if ( exploding_count > 0 ) {
+        var extra_rolls = new DiceExpression(exploding_count, this.sides);
+        extra_rolls = [...extra_rolls.explode(over)].map((r) => {
+            r.bonus = true;
+            return r;
+        });
+        this.rolled_values = this.rolled_values.concat(extra_rolls);
+    }
     return this;
 };
 
