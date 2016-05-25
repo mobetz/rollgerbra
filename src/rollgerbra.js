@@ -12,7 +12,7 @@ var operators = {
     'b': { priority: dicepriority, func: (x,y) => x.best(y) },
     'w': { priority: dicepriority, func: (x,y) => x.worst(y) },
     '!': { priority: dicepriority, func: (x,y) => x.explode(y) },
-    'h': { priority: dicepriority, func: (x,y) => { x.hit_on = y; return x; } },
+    'h': { priority: dicepriority, func: (x,y) => x.hits(y) },
     //miss
     //over
     //under

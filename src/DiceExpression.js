@@ -50,6 +50,15 @@ DiceExpression.prototype.worst = function (count) {
     return this;
 };
 
+DiceExpression.prototype.hits = function (hit_on) {
+    this.hit_on = hit_on;
+    this.rolled_values = this.rolled_values.map((v) => {
+        v.valid = v >= this.hit_on;
+        return v;
+    });
+    return this;
+};
+
 /* --- JAVASCRIPT INTERFACES --- */
 DiceExpression.prototype[Symbol.iterator] = function ()
 {
