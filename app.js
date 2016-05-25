@@ -64,8 +64,18 @@ function parse(expression) {
 
 module.exports = parse;
 
+
+/*--- CLI Functions ---*/
+function render_die_value(die_value) {
+    var valid_char = (die_value.valid) ? '' : '~';
+    var bonus_char = (die_value.bonus) ? '+' : '';
+    return bonus_char + valid_char + die_value.raw_value + valid_char;
+}
+
 if ( require.main == module ) {
     var result =  parse(process.argv[2]);
-    var diestring = result.dice.reduce((str, de) => str + " " + de.toString() + ": [" + [...de].join(', ') + "]", '');
+    var diestring = result.dice.reduce((str, de) =>
+        str + " " + de.toString() + ": [" + [...de].map(render_die_value).join(', ') + "]",
+    '');
     console.log( "Rolling " + process.argv[2] + ": {" + diestring + "} = " + result.calculation);
 }
