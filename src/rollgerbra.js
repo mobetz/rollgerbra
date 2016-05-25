@@ -1,6 +1,6 @@
 
-var DiceExpression = require("./src/DiceExpression.js");
-var DieValue = require("./src/DieValue.js");
+var DiceExpression = require("./DiceExpression.js");
+var DieValue = require("./DieValue.js");
 
 var dicepriority = 3;
 

@@ -1,9 +1,13 @@
 {
   "name": "rollgerbra",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
+  "main": "./src/rollgerbra.js",
   "scripts": {
-    "start": "node ./app.js"
+    "start": "node ./src/rollgerbra.js"
+  },
+  "devDependencies": {
+    "nodeunit": "*"
   },
   "dependencies": {
   }
