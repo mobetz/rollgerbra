@@ -20,29 +20,40 @@ var operators = {
 
 function do_next_operation(num_queue, variadic_queue, op_queue, output) {
     var op = op_queue.pop();
+    var result;
     if ( op.variadic ) {
-        variadic_operation(num_queue, variadic_queue, op);
+        result = variadic_operation(num_queue, variadic_queue, op);
     }
     else {
-        binary_operation(num_queue, op, output);
+        result = binary_operation(num_queue, op);
     }
-}
-
-function binary_operation(num_queue, op, output) {
-    var t2 = num_queue.pop();
-    var t1 = num_queue.pop();
-    var result = op.func(t1, t2);
+    //whatever the result of our operation was becomes the first argument to the next operator
+    //note: this won't work for nested variadic functions, but the solution for that is uglier
     num_queue.push(result);
+    //we want to preserve references to any dice expressions in case users want to show
+    //raw rolled values in their output. So if the operation we did was a roll, add a reference to the reuslt
     if ( op == operators['d'] ) {
         output.dice.push(result);
     }
 }
 
+function binary_operation(num_queue, op) {
+    var t2 = num_queue.pop();
+    var t1 = num_queue.pop();
+    var result = op.func(t1, t2);
+    return result;
+}
+
 function variadic_operation(num_queue, variadic_queue, op) {
     var t1 = num_queue.pop();
+    //note: this won't work for variadic functions operating as binary functions whose second argument is 0
+    //fortunately, this isn't relevant in the case of dice notation (where arguments of 0 are generally meaningless)
     var tn = (variadic_queue.length > 1 || variadic_queue[0] != 0) ? variadic_queue : [];
     var result = op.func(t1, ...tn);
-    num_queue.push(result);
+    //clear the variadic queue, as we just used everything on it.
+    //note: this won't work for nested variadic functions, but the solution for that is uglier
+    variadic_queue.length = 0;
+    return result;
 }
 
 /*
@@ -56,6 +67,8 @@ function parse(expression) {
     var op_queue = [];
     var num_queue = [0];
     var variadic_queue = [];
+    //the "active queue" is the queue constants should be pushed to. For variadic functions,
+    //we can detect how many arguments belong to them by the size of their queue.
     var active_number_queue = num_queue;
 
     //step through characters left-to-right, pushing them to the queue that represents their symbol type
@@ -85,6 +98,7 @@ function parse(expression) {
         do_next_operation(num_queue, variadic_queue, op_queue, output);
     }
 
+    //the last thing left on the number queue is the final total, so pop it off and send it to the user
     output.calculation = Number(num_queue.pop());
     return output;
 }//parse
