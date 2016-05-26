@@ -4,7 +4,8 @@
   "private": true,
   "main": "./src/rollgerbra.js",
   "scripts": {
-    "start": "node ./src/rollgerbra.js"
+    "start": "node ./src/rollgerbra.js",
+    "test": "./node_modules/.bin/nodeunit"
   },
   "devDependencies": {
     "nodeunit": "*"

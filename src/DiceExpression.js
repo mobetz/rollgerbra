@@ -45,7 +45,7 @@ DiceExpression.prototype.best = function (count) {
 };
 
 DiceExpression.prototype.worst = function (count) {
-    var excluded_dice = this.rolled_values.filter((v)=>v.valid).sort((a,b) =>  a-b).slice(count);
+    var excluded_dice = this.rolled_values.filter((v)=>v.valid).sort((a,b) => a-b).slice(count);
     excluded_dice.forEach((d) => d.valid = false);
     return this;
 };
