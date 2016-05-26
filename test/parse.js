@@ -37,6 +37,19 @@ module.exports = {
           test.ok(no_values_over_sides, "Some of the dice rolled have too many sides.");
           test.equals(result.calculation, dice_total, "The returned sum does not match the sum of the returned dice.");
           test.done();
+      },
+      "Best": function (test) {
+          var num_dice = 8;
+          var num_sides = 10;
+          var keep_count = 3;
+          var result = parse( num_dice + "d" + num_sides + "b" + keep_count);
+          var all_dice = result.dice.reduce((a, d) => a.concat(...d), []);
+          var number_saved = all_dice.reduce((s, d)=>s+d.valid, 0);
+          all_dice.sort((a,b) => b.raw_value - a.raw_value );
+          var largest_dice_saved = all_dice.every((d, i)=>d.valid == (i < keep_count));
+          test.equal(number_saved, keep_count, "The wrong number of dice were kept.");
+          test.ok(largest_dice_saved, "The dice saved by best were not the largest.");
+          test.done();
       }
     }
 };
