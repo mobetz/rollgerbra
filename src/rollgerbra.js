@@ -11,7 +11,7 @@ var operators = {
     'd': { priority: dicepriority, func: (x,y) => new DiceExpression(x,y) },
     'b': { priority: dicepriority, func: (x,y) => x.best(y) },
     'w': { priority: dicepriority, func: (x,y) => x.worst(y) },
-    '!': { priority: dicepriority, variadic: true, func: (x,y) => x.explode(y) },
+    '!': { priority: dicepriority, variadic: true, func: (x,y) => { y = y || x.sides; return x.explode(y) } },
     'h': { priority: dicepriority, func: (x,y) => x.hits(y) },
     //miss
     //over
@@ -40,7 +40,7 @@ function binary_operation(num_queue, op, output) {
 
 function variadic_operation(num_queue, variadic_queue, op) {
     var t1 = num_queue.pop();
-    var tn = variadic_queue;
+    var tn = (variadic_queue.length > 1 || variadic_queue[0] != 0) ? variadic_queue : [];
     var result = op.func(t1, ...tn);
     num_queue.push(result);
 }

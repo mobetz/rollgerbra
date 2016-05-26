@@ -38,17 +38,28 @@ module.exports = {
           test.equals(result.calculation, dice_total, "The returned sum does not match the sum of the returned dice.");
           test.done();
       },
-      "Best": function (test) {
-          var num_dice = 8;
-          var num_sides = 10;
-          var keep_count = 3;
-          var result = parse( num_dice + "d" + num_sides + "b" + keep_count);
+      "Binary Explosion": function (test) {
+          var num_dice = 12;
+          var num_sides = 8;
+          var explode_on = 5;
+          var added_const = 100;
+          var result = parse(num_dice + "d" + num_sides + "!" + explode_on + "+" + added_const);
           var all_dice = result.dice.reduce((a, d) => a.concat(...d), []);
-          var number_saved = all_dice.reduce((s, d)=>s+d.valid, 0);
-          all_dice.sort((a,b) => b.raw_value - a.raw_value );
-          var largest_dice_saved = all_dice.every((d, i)=>d.valid == (i < keep_count));
-          test.equal(number_saved, keep_count, "The wrong number of dice were kept.");
-          test.ok(largest_dice_saved, "The dice saved by best were not the largest.");
+          var number_exploded = all_dice.length - num_dice;
+          var explosions_expected = all_dice.reduce((s, d)=>s + (d.raw_value >= explode_on), 0);
+          var dice_total = all_dice.reduce((s, d)=>s + d, 0);
+          test.equal(number_exploded, explosions_expected, "The wrong number of dice exploded.");
+          test.equal(result.calculation, dice_total + added_const, "The dice were added incorrectly to the calculated result.");
+          test.done();
+      },
+      "Unary Explosion": function (test) {
+          var num_dice = 8;
+          var num_sides = 4;
+          var result = parse(num_dice + "d" + num_sides + "!");
+          var all_dice = result.dice.reduce((a, d) => a.concat(...d), []);
+          var number_exploded = all_dice.length - num_dice;
+          var explosions_expected = all_dice.reduce((s, d)=>s +(d.raw_value == num_sides), 0);
+          test.equal(number_exploded, explosions_expected, "The wrong number of dice exploded.");
           test.done();
       }
     }
