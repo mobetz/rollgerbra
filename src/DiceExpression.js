@@ -1,11 +1,15 @@
 var DieValue = require("./DieValue.js");
 
 function DiceExpression (quantity, sides) {
+    this.quantity = quantity;
     this.sides = sides;
     this.rolled_values = roll(quantity, sides);
     this.dice_string = quantity + "d" + sides;
     this.hit_on = -1;
     this.miss_on = -1;
+    this.explode_on = -1;
+    this.best_count = -1;
+    this.worst_count = -1;
 }
 
 /* --- PRIVATE METHODS --- */
@@ -26,6 +30,7 @@ function count_successes(dice, target) {
 
 /* --- PUBLIC METHODS --- */
 DiceExpression.prototype.explode = function (over) {
+    this.explode_on = over;
     var exploding_count = count_successes(this.rolled_values, over);
     if ( exploding_count > 0 ) {
         var extra_rolls = new DiceExpression(exploding_count, this.sides);
@@ -39,12 +44,14 @@ DiceExpression.prototype.explode = function (over) {
 };
 
 DiceExpression.prototype.best = function (count) {
+    this.best_count = count;
     var excluded_dice = this.rolled_values.filter((v)=>v.valid).sort((a,b) => b-a).slice(count);
     excluded_dice.forEach((d) => d.valid = false);
     return this;
 };
 
 DiceExpression.prototype.worst = function (count) {
+    this.worst_count = count;
     var excluded_dice = this.rolled_values.filter((v)=>v.valid).sort((a,b) => a-b).slice(count);
     excluded_dice.forEach((d) => d.valid = false);
     return this;
