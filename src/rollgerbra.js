@@ -80,9 +80,9 @@ function parse(expression) {
         }
         else {
             var next_op = operators[next_char];
-            //if the next function is variadic, all numbers until the next op will be pushed to a temporary queue instead
-            active_number_queue = (next_op.variadic) ? variadic_queue : num_queue;
             if ( next_op ) {
+                //if the next function is variadic, all numbers until the next op will be pushed to a temporary queue instead
+                active_number_queue = (next_op.variadic) ? variadic_queue : num_queue;
                 //do any previously pushed ops with higher or equal priority, as nothing new can affect them
                 while ( op_queue.length > 0 && next_op.priority <= op_queue[op_queue.length-1].priority ) {
                     do_next_operation(num_queue, variadic_queue, op_queue, output);
@@ -90,6 +90,9 @@ function parse(expression) {
                 op_queue.push(next_op);
                 active_number_queue.push(0); //if we've encountered an operator, next numbers are new numbers
             }//if there is an op for this character
+            else {
+                throw `Specified an invalid operation: ${next_char}`;
+            }
         }//if the character is not a number
     }//for each character
 
