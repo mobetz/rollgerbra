@@ -1,7 +1,7 @@
 
 
 function DieValue (sides) {
-    this.raw_value = Math.floor(Math.random() * sides) + 1;
+    this.raw_value = Math.ceil(Math.random() * sides);
     this.valid = true;
     this.bonus = false;
 }
